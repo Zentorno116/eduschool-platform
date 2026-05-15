@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSchool - Платформа онлайн-курсов для школьников</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg-light: #f3f4f6;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --border-thin: 0.0625rem solid var(--border-color);
+            --radius: 0.5rem;
+        }
+
+        html {
+            font-size: 100%;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-white);
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 75rem;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--bg-white);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .header {
+            background-color: var(--bg-white);
+            border-bottom: var(--border-thin);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            background-color: var(--bg-light);
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features,
+        .courses {
+            padding: 5rem 0;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border: var(--border-thin);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing {
+            padding: 5rem 0;
+            background-color: var(--bg-light);
+        }
+
+        .grid-table {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-white);
+            border: var(--border-thin);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .table-header,
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            border-bottom: var(--border-thin);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-header {
+            background-color: #e5e7eb;
+            font-weight: 700;
+        }
+
+        .table-cell {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact {
+            padding: 5rem 0;
+        }
+
+        .contact-form {
+            max-width: 35rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            padding: 0.75rem;
+            border: var(--border-thin);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .footer {
+            background-color: var(--text-main);
+            color: var(--bg-white);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .error-msg {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-control.invalid {
+            border-color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        @media (max-width: 48em) {
+            .nav-list {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            .table-row {
+                display: flex;
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+
+            .table-cell {
+                padding: 0.5rem 1.5rem;
+                justify-content: space-between;
+            }
+
+            .table-cell::before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: var(--text-muted);
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--Шапка-->
+    <header class="header">
+        <div class="container">
+
+            <div class="logo">EduSchool</div>
+
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="/#features" class="nav-link">Преимущества</a></li>
+                    <li><a th:href="@{/courses}" class="nav-link">Курсы</a></li>
+                    <li><a href="/#pricing" class="nav-link">Цены</a></li>
+                    <li><a href="/#contact" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+
+            <div>
+                <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn">Войти</a>
+
+                <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-weight: 600; color: var(--primary-color);">
+                        Привет, <span sec:authentication="name">Юзер</span>.
+                    </span>
+                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn"
+                            style="background-color: #dc2626; padding: 0.5rem 1rem;">Выйти</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <main>
+        <!--Главный экран-->
+        <section class="hero">
+            <div class="container">
+                <h1>Учим тому, чему не научат в школе</h1>
+                <p>Шахматы, английский язык и программирование для школьников от 7 до 17 лет. Интерактивная платформа и
+                    опытные преподаватели.</p>
+                <a href="#contact" class="btn">Записаться на пробный урок</a>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--primary-color); font-weight: 600;">
+                    Первое занятие в подарок :D
+                </p>
+            </div>
+        </section>
+
+        <!--преимущества-->
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Почему выбирают нас</h2>
+                <div class="grid-cards">
+                    <article class="card">
+                        <h3>👨‍🏫 Менторы</h3>
+                        <p>Не просто учителя, а менторы из индустрии. Говорим с ребенком на одном языке.</p>
+                    </article>
+                    <article class="card">
+                        <h3>🎮 Геймификация</h3>
+                        <p>Никакой скуки! За прохождение уроков ученики получают ачивки и соревнуются в рейтинге.</p>
+                    </article>
+                    <article class="card">
+                        <h3>📅 Учеба в твоем ритме</h3>
+                        <p>Уроки доступны 24/7 с любого устройства. Занимайтесь там, где вам удобно.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!--курсы-->
+        <section id="courses" class="courses">
+            <div class="container">
+                <h2 class="section-title">Популярные направления</h2>
+                <div class="grid-cards">
+                    <article class="card">
+                        <h3>♟️ Шахматы для начинающих</h3>
+                        <p>Возраст: 7-10 лет. Развитие логики, стратегического мышления и усидчивости.</p>
+                        <a href="#contact" class="btn">Узнать подробнее</a>
+                    </article>
+                    <article class="card">
+                        <h3>🇬🇧 Английский (A1-A2)</h3>
+                        <p>Возраст: 10-14 лет. Разговорная практика, грамматика и подготовка к экзаменам.</p>
+                        <a href="#contact" class="btn">Узнать подробнее</a>
+                    </article>
+                    <article class="card">
+                        <h3>💻 Основы Python</h3>
+                        <p>Возраст: 12-17 лет. Создание первых игр, ботов и понимание алгоритмов.</p>
+                        <a href="#contact" class="btn">Узнать подробнее</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!--Прайс-лист-->
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <h2 class="section-title">Стоимость обучения</h2>
+
+                <div class="grid-table" role="table" aria-label="Прайс-лист курсов">
+
+                    <div class="table-header" role="row">
+                        <div class="table-cell" role="columnheader">Название курса</div>
+                        <div class="table-cell" role="columnheader">Формат</div>
+                        <div class="table-cell" role="columnheader">Длительность</div>
+                        <div class="table-cell" role="columnheader">Цена (в месяц)</div>
+                    </div>
+
+                    <div class="table-row" role="row" th:each="course : ${coursesList}">
+                        <div class="table-cell" role="cell" data-label="Курс:" th:text="${course.title}"></div>
+
+                        <div class="table-cell" role="cell" data-label="Формат:" th:text="${course.format}"></div>
+
+                        <div class="table-cell" role="cell" data-label="Длительность:"
+                            th:text="${course.durationMonths + ' мес.'}"></div>
+
+                        <div class="table-cell" role="cell" data-label="Цена:" th:text="${course.price + ' ₽'}"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Оставить заявку</h2>
+                <form class="contact-form" id="leadForm" novalidate>
+                    <div class="form-group">
+                        <label for="name">Имя родителя</label>
+                        <input type="text" id="name" class="form-control" required placeholder="Иван Иванов">
+                        <span class="error-msg" id="nameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" class="form-control" required placeholder="example@mail.ru">
+                        <span class="error-msg" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" class="form-control" required placeholder="+7 (999) 123-45-67">
+                        <span class="error-msg" id="phoneError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Дата начала обучения</label>
+                        <input type="text" id="date" class="form-control" required placeholder="27.03.2026">
+                        <span class="error-msg" id="dateError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Выберите курс</label>
+                        <select id="course" class="form-control">
+                            <option value="chess">Шахматы</option>
+                            <option value="english">Английский язык</option>
+                            <option value="python">Программирование (Python)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Отправить заявку</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!--Подвал-->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 EduSchool. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('leadForm');
+
+            const regexPatterns = {
+                name: /^[А-Яа-яЁёA-Za-z\s-]{2,50}$/,
+                email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                phone: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
+                date: /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(20[0-2][0-9]|2030)$/
+            };
+
+            const errorMessages = {
+                name: 'Имя должно содержать от 2 до 50 букв.',
+                email: 'Введите корректный E-mail адрес.',
+                phone: 'Формат телефона: +7 (XXX) XXX-XX-XX',
+                date: 'Формат ДД.ММ.ГГГГ. Год должен быть от 2000 до 2030.'
+            };
+
+            const validateField = (fieldId) => {
+                const input = document.getElementById(fieldId);
+                const errorSpan = document.getElementById(`${fieldId}Error`);
+                const value = input.value.trim();
+                const isValid = regexPatterns[fieldId].test(value);
+
+                if (!isValid) {
+                    input.classList.add('invalid');
+                    errorSpan.textContent = errorMessages[fieldId];
+                    errorSpan.style.display = 'block';
+                    return false;
+                } else {
+                    input.classList.remove('invalid');
+                    errorSpan.style.display = 'none';
+                    return true;
+                }
+            };
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const isNameValid = validateField('name');
+                const isEmailValid = validateField('email');
+                const isPhoneValid = validateField('phone');
+                const isDateValid = validateField('date');
+
+                if (isNameValid && isEmailValid && isPhoneValid && isDateValid) {
+                    alert('Форма отправлена, заявка принята.');
+                    form.reset();
+                }
+            });
+
+            ['name', 'email', 'phone', 'date'].forEach(id => {
+                document.getElementById(id).addEventListener('input', function () {
+                    this.classList.remove('invalid');
+                    document.getElementById(`${id}Error`).style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

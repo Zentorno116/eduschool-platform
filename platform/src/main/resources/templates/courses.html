@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог курсов</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .course-card { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;}
+        .btn { display: inline-block; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Полный каталог направлений</h1>
+    
+    <div th:each="course : ${coursesList}" class="course-card">
+        <h2 th:text="${course.title}">Название</h2>
+        <p>Формат: <span th:text="${course.format}"></span></p>
+        <p>Продолжительность: <span th:text="${course.durationMonths + ' мес.'}"></span></p>
+        <p><strong>Цена: <span th:text="${course.price + ' ₽/мес'}"></span></strong></p>
+    </div>
+
+    <br>
+    <a href="/" class="btn">Вернуться на главную</a>
+</body>
+</html>
